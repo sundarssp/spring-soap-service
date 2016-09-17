@@ -16,6 +16,7 @@ import org.springframework.ws.server.EndpointInterceptor;
 import org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler;
+import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
 import org.springframework.ws.soap.server.endpoint.interceptor.SoapEnvelopeLoggingInterceptor;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
@@ -30,25 +31,33 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public void addInterceptors(List<EndpointInterceptor> interceptors) {
 		interceptors.add(new PayloadLoggingInterceptor());
 		interceptors.add(new SoapEnvelopeLoggingInterceptor());
-		
+
 		Wss4jSecurityInterceptor security = new Wss4jSecurityInterceptor();
+		security.setValidationActions("Signature");
 
-		security.setValidationActions("UsernameToken Timestamp");
-		security.setValidationCallbackHandler(callbackHandler());
+		CryptoFactoryBean cfb = new CryptoFactoryBean();
+		try {
+			cfb.setKeyStoreLocation(new ClassPathResource("consumerpublicstore.jks"));
+			cfb.setKeyStorePassword("keyStorePassword");
+			cfb.afterPropertiesSet();
 
-		interceptors.add(security);
+			security.setValidationSignatureCrypto(cfb.getObject());
+			interceptors.add(security);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public CallbackHandler callbackHandler() {
 		SimplePasswordValidationCallbackHandler callbackHandler = new SimplePasswordValidationCallbackHandler();
-		
+
 		Properties users = new Properties();
 		users.setProperty("user1", "secret");
 		callbackHandler.setUsers(users);
-		
+
 		return callbackHandler;
 	}
-	
+
 	@Bean
 	public ServletRegistrationBean messageDispatcherServlet(ApplicationContext applicationContext) {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
