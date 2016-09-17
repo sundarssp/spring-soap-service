@@ -31,6 +31,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		Wss4jSecurityInterceptor security = new Wss4jSecurityInterceptor();
 		security.setValidationActions("Signature");
 
+		addSignatureValidation(security, interceptors);
+	}
+
+	private void addSignatureValidation(Wss4jSecurityInterceptor security, List<EndpointInterceptor> interceptors) {
 		CryptoFactoryBean cfb = new CryptoFactoryBean();
 		try {
 			cfb.setKeyStoreLocation(new ClassPathResource("consumerpublicstore.jks"));
