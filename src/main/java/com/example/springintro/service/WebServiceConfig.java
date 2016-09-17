@@ -33,7 +33,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		
 		Wss4jSecurityInterceptor security = new Wss4jSecurityInterceptor();
 
-		security.setValidationActions("UsernameToken");
+		security.setValidationActions("UsernameToken Timestamp");
 		security.setValidationCallbackHandler(callbackHandler());
 
 		interceptors.add(security);
