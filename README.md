@@ -24,9 +24,21 @@ This repository has a basic SOAP web service using Spring Boot. It is similar to
 2. Added username token validator
 3. Added password call back handler
 
-For testing 
+__For testing__
 
 1. Add outgoing WS Security configuration in SOAP UI
 2. Add username header
 3. Set the username and password to "user1" and "secret"
 
+**usernametoken-ts branch**
+
+This branch requires both username and timestamp token in the same order. Spring doesn't require any additional code for validating the timestamp. Adding "Timestamp" in the ValidationActions is enough.
+
+1. Added "Timestamp" token
+
+__For testing__
+
+1. Add outgoing WS Security configuration in SOAP UI
+2. Add username header
+3. Add timestamp header
+4. Set the username and password to "user1" and "secret"
