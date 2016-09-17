@@ -1,9 +1,6 @@
 package com.example.springintro.service;
 
 import java.util.List;
-import java.util.Properties;
-
-import javax.security.auth.callback.CallbackHandler;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +12,6 @@ import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.EndpointInterceptor;
 import org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
-import org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler;
 import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
 import org.springframework.ws.soap.server.endpoint.interceptor.SoapEnvelopeLoggingInterceptor;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
@@ -46,16 +42,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public CallbackHandler callbackHandler() {
-		SimplePasswordValidationCallbackHandler callbackHandler = new SimplePasswordValidationCallbackHandler();
-
-		Properties users = new Properties();
-		users.setProperty("user1", "secret");
-		callbackHandler.setUsers(users);
-
-		return callbackHandler;
 	}
 
 	@Bean
