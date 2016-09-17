@@ -4,6 +4,7 @@ Spring Soap Web Service
 This repository has a basic SOAP web service using Spring Boot. It is similar to the getting started example available in the Sprint guide.
 
 **Commands**
+
 mvn compile
 mvn spring-boot:run
 
