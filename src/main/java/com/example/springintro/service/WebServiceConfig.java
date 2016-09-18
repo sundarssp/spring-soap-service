@@ -34,9 +34,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		addSignatureValidation(security, interceptors);
 		
 		// Add securement
-		security.setSecurementActions("Signature Encrypt");
+		security.setSecurementActions("Encrypt");
 		
-		addSignatureSecurement(security, interceptors);
 		addEncryptionSecurement(security, interceptors);
 		interceptors.add(security);
 	}
@@ -57,22 +56,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 			cfb.afterPropertiesSet();
 
 			security.setSecurementEncryptionCrypto(cfb.getObject());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void addSignatureSecurement(Wss4jSecurityInterceptor security, List<EndpointInterceptor> interceptors) {
-		security.setSecurementUsername("myalias");
-		security.setSecurementPassword("myaliasPassword");
-		
-		CryptoFactoryBean cfb = new CryptoFactoryBean();
-		try {
-			cfb.setKeyStoreLocation(new ClassPathResource("serverprivatestore.jks"));
-			cfb.setKeyStorePassword("keyStorePassword");
-			cfb.afterPropertiesSet();
-
-			security.setSecurementSignatureCrypto(cfb.getObject());			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
